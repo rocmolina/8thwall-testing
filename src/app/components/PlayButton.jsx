@@ -5,7 +5,7 @@ const PlayButton = ({ label }) => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push('pages/8thwall');
+    router.push('/8thwall');
   };
 
   return (
