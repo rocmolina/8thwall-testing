@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import PlayButton from './components/PlayButton';
+import PlayButton from '../components/PlayButton';
 
 
 export default function Home() {

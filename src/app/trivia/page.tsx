@@ -1,5 +1,5 @@
 import React from 'react';
-import PlayButton from '@/app/components/PlayButton';
+import PlayButton from '@/components/PlayButton';
 
 
 export default function About() {
