@@ -17,7 +17,7 @@ const INNER_FRAME_URL = 'https://bactrivia.8thwall.app/bactrivia/';
 
 const WebARViewer = () => {
   useEffect(() => {
-    // Cargar script de 8th Wall
+    // Load 8th Wall iframe helper script
     const script = document.createElement('script');
     script.src = 'https://cdn.8thwall.com/web/iframe/iframe.js';
     script.async = true;
@@ -27,8 +27,6 @@ const WebARViewer = () => {
         window.XRIFrame.registerXRIFrame(IFRAME_ID);
       }
 
-      // Iniciar AR directamente al cargar
-      const iframe = document.getElementById(IFRAME_ID) as HTMLIFrameElement;
       const controls = document.getElementById(CONTROLS_ID);
       const poweredByLogo = document.getElementById(LOGO_ID);
 
@@ -53,8 +51,6 @@ const WebARViewer = () => {
           }, 900);
         }
       });
-
-      iframe.setAttribute('src', INNER_FRAME_URL);
     };
 
     document.body.appendChild(script);
@@ -66,7 +62,10 @@ const WebARViewer = () => {
 
   return (
     <div className="relative">
-      <div id={LOGO_ID} className="absolute top-4 left-4 z-10 text-white bg-black bg-opacity-50 px-2 py-1 rounded">
+      <div
+        id={LOGO_ID}
+        className="absolute top-4 left-4 z-10 text-white bg-black bg-opacity-50 px-2 py-1 rounded"
+      >
         Powered by 8th Wall
       </div>
 
@@ -81,7 +80,9 @@ const WebARViewer = () => {
       <iframe
         id={IFRAME_ID}
         title="8th Wall AR"
+        src={INNER_FRAME_URL} // ✅ src is now set directly
         allow="camera;gyroscope;accelerometer;magnetometer;xr-spatial-tracking;microphone;"
+        allowFullScreen
         style={{
           border: 'none',
           width: '100%',
