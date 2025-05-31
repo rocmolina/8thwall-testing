@@ -1,6 +1,6 @@
 import React from 'react';
 import PlayButton from '@/app/components/PlayButton';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 
 export default function About() {
   return (
