@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Needed for routing
+import MenuButton from '../../components/MenuButton';
 
 declare global {
   interface Window {
@@ -16,8 +18,9 @@ const LOGO_ID = 'poweredByLogo';
 const INNER_FRAME_URL = 'https://bactrivia.8thwall.app/bactrivia/';
 
 const WebARViewer = () => {
+  const router = useRouter();
+
   useEffect(() => {
-    // Load 8th Wall iframe helper script
     const script = document.createElement('script');
     script.src = 'https://cdn.8thwall.com/web/iframe/iframe.js';
     script.async = true;
@@ -31,6 +34,12 @@ const WebARViewer = () => {
       const poweredByLogo = document.getElementById(LOGO_ID);
 
       window.addEventListener('message', (event) => {
+        // ✅ Listen for navigation command from iframe
+        if (event.data?.type === 'navigate' && typeof event.data.path === 'string') {
+          router.push(event.data.path);
+          return;
+        }
+
         if (event.data !== 'acceptedCamera') return;
 
         if (controls) {
@@ -54,33 +63,17 @@ const WebARViewer = () => {
     };
 
     document.body.appendChild(script);
-
     return () => {
       document.body.removeChild(script);
     };
-  }, []);
+  }, [router]);
 
   return (
     <div className="relative">
-      <div
-        id={LOGO_ID}
-        className="absolute top-4 left-4 z-10 text-white bg-black bg-opacity-50 px-2 py-1 rounded"
-      >
-        Powered by 8th Wall
-      </div>
-
-      <div
-        id={CONTROLS_ID}
-        className="absolute bottom-4 right-4 z-10 text-white bg-black bg-opacity-50 px-3 py-2 rounded hidden"
-        style={{ display: 'none' }}
-      >
-        Controles AR
-      </div>
-
       <iframe
         id={IFRAME_ID}
         title="8th Wall AR"
-        src={INNER_FRAME_URL} // ✅ src is now set directly
+        src={INNER_FRAME_URL}
         allow="camera;gyroscope;accelerometer;magnetometer;xr-spatial-tracking;microphone;"
         allowFullScreen
         style={{
@@ -92,6 +85,8 @@ const WebARViewer = () => {
           display: 'block',
         }}
       />
+
+      <MenuButton />
     </div>
   );
 };
